@@ -14,14 +14,14 @@ selectedBrands = 'samsung|apple|huawei';
 
 var sizes = {
   image: {
-    width: 256,
-    height: 256
+    width: 128,
+    height: 128
   },
   atlas: {
     width: 2048,
     height: 2048,
-    cols: 2048 / 256,
-    rows: 2048 / 256
+    cols: 2048 / 128,
+    rows: 2048 / 128
   }
 }
 
@@ -439,8 +439,8 @@ function getImageMeshData(idx) {
 **/
 
 function loadAtlasFiles() {
-  for (var i=0; i<atlasCounts['256px']; i++) {
-    var url = 'atlas_files/256px/atlas-' + i + '.jpg';
+  for (var i=0; i<atlasCounts['128px']; i++) {
+    var url = 'atlas_files/128px/atlas-' + i + '.jpg';
     textureLoader.load(url, handleTexture.bind(null, i),
       onProgress.bind(null, i))
   }
@@ -462,7 +462,7 @@ function onProgress(atlasIndex, xhr) {
   }, 0);
   // Update the progress marker
   var loader = document.querySelector('#progress');
-  progress = sum / atlasCounts['256px'];
+  progress = sum / atlasCounts['128px'];
   loader.innerHTML = parseInt(progress * 100) + '%';
   if (progress === 1) startIfReady()
 }
@@ -478,7 +478,7 @@ function onProgress(atlasIndex, xhr) {
 
 function handleTexture(textureIndex, texture) {
   var material = new THREE.MeshBasicMaterial({ map: texture });
-  materials['256'][textureIndex] = material;
+  materials['128'][textureIndex] = material;
   startIfReady();
 }
 
@@ -487,8 +487,8 @@ function handleTexture(textureIndex, texture) {
 **/
 
 function startIfReady() {
-  var atlasCount = atlasCounts['256px'];
-  var loadedAtlasCount = Object.keys(materials['256']).length;
+  var atlasCount = atlasCounts['128px'];
+  var loadedAtlasCount = Object.keys(materials['128']).length;
   if (loadedAtlasCount === atlasCount &&
       Object.keys(imageData).length > 0 &&
       progress === 1) {
@@ -524,7 +524,7 @@ function buildGeometry() {
     }
     var startMaterial = imageData[ meshImages[0] ].atlas.index;
     var endMaterial = imageData[ meshImages[j-1] ].atlas.index;
-    buildMesh(geometry, materials['256'].slice(startMaterial, endMaterial + 1));
+    buildMesh(geometry, materials['128'].slice(startMaterial, endMaterial + 1));
   }
   requestAnimationFrame(animate);
   removeLoaderScene();
@@ -670,17 +670,17 @@ function buildMesh(geometry, materials) {
 
 function loadLargeAtlasFiles() {
   sizes.image = {
-    width: 256,
-    height: 256
+    width: 128,
+    height: 128
   }
   sizes.atlas = {
     width: 2048,
     height: 2048,
-    cols: 2048 / 256,
-    rows: 2048 / 256
+    cols: 2048 / 128,
+    rows: 2048 / 128
   }
-  for (var i=0; i<atlasCounts['256px']; i++) {
-    var url = 'atlas_files/256px/atlas-' + i + '.jpg';
+  for (var i=0; i<atlasCounts['128px']; i++) {
+    var url = 'atlas_files/128px/atlas-' + i + '.jpg';
     textureLoader.load(url, handleLargeTexture.bind(null, i))
   }
 }
@@ -696,7 +696,7 @@ function loadLargeAtlasFiles() {
 
 function handleLargeTexture(atlasIndex, texture) {
   var material = new THREE.MeshBasicMaterial({ map: texture });
-  materials['256'][atlasIndex] = material;
+  materials['128'][atlasIndex] = material;
   updateImages(atlasIndex)
 }
 
@@ -718,7 +718,7 @@ function updateImages(atlasIndex) {
   // Identify the index position for the new atlas file
   var materialIndex = meshes[meshIndex].material.length;
   // Add the new atlas to its mesh
-  meshes[meshIndex].material.push( materials['256'][atlasIndex] )
+  meshes[meshIndex].material.push( materials['128'][atlasIndex] )
   // Request an update for this material
   meshes[meshIndex].material[materialIndex].needsUpdate = true;
   // Grab the geometry to which we added the new atlas
